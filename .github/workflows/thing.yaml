@@ -5,25 +5,13 @@ on:
     branches: ['**']
 
 jobs:
-  prep:
-    name: 'Prepare execution data'
-    runs-on: 'ubuntu-20.04'
-    outputs:
-      branch-name: '${{ steps.git.outputs.branch-name }}'
-    steps:
-      - name: 'get github values'
-        id: 'git'
-        run: |
-          BRANCH_NAME=${GITHUB_REF##*/}
-          echo ::set-output name=branch-name::${BRANCH_NAME}
   deploy:
     runs-on: 'ubuntu-20.04'
     name: 'Pages Deploy'
-    needs: ['prep']
     steps:
       - uses: 'actions/checkout@v2'
       - name: 'Deploy Pages 🚀'
         uses: 'JamesIves/github-pages-deploy-action@4.1.0'
         with:
-          branch: '${{ needs.prep.outputs.branch-name }}'
+          branch: 'pages'
           folder: 'report'
